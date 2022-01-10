@@ -11,7 +11,8 @@ import { useSelector } from 'react-redux';
 import loaderr from '../../media/loader2.gif'
 import { Link } from 'react-router-dom';
 import back from '../../media/atras.png'
-
+import c01d from '../../media/conditions/c01d.png'
+import c01n from '../../media/conditions/c01n.png'
 //Styled-components
 
 
@@ -195,6 +196,11 @@ export default function DetailLocate(){
     const timezoneInMinutes = (detail.timezone)/ 60;
     const currTime = moment().utcOffset(timezoneInMinutes).format("h:mm A");
 
+    let conditions = {
+        c01d: c01d,
+        c01n: c01n
+    }
+
     return (
         <Body>
             {
@@ -214,7 +220,8 @@ export default function DetailLocate(){
                             <DivGeneral>
                                 <DivTempInfo>
                                     <DivTemp>
-                                        <img src={`http://openweathermap.org/img/wn/${detail.weather[0].icon}@2x.png`} width='130px' height='130px'/>
+                                        
+                                        <img src={(detail.weather[0].icon === '01d') ? conditions[`c${detail.weather[0].icon}`] : `http://openweathermap.org/img/wn/${detail.weather[0].icon}@2x.png`} width='130px' height='130px'/>
                                         <Temp>{`${Math.round(detail.main.temp)}°c`}</Temp>
                                     </DivTemp>
                                     <DivInfo>
