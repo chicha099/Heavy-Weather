@@ -13,8 +13,8 @@ const NavBar = styled.header`
     flex-direction: row;
     justify-content: space-evenly;
     align-items: center;
-    background-color: #046F94;
-    height: 10%;
+    background-color: #35005A;
+    height: 7%;
 `;
 
 const DivH2 = styled.div`
@@ -29,9 +29,11 @@ const DivH2 = styled.div`
 const H2 = styled(Link)`
     color: white;
     font-family: 'Comfortaa';
-    font-size: 1.7em;
+    font-size: 1.2em;
     font-weight: 600;
     padding: 10px;
+    padding-bottom: 0px;
+    padding-left: 0px;
     text-decoration: none;
 `;
 
@@ -84,15 +86,15 @@ export default function Nav(){
     return (
         <NavBar>
             <DivH2>
-                <img src={clima} width='40px' height='40px' />
-                <H2 to='/'>Weather-App</H2>
+                <img src={clima} width='50px' height='50px' />
+                <H2 to='/'>Heavy Weather</H2>
             </DivH2>
             <DivSearch>
                 <SearchBar />
             </DivSearch>
             <DivLoc>
                 <img src={placeholder} width='20px' height='20px'/>
-                <Loc to={`/locate/${state.lon}/${state.lat}`}>Weather in your City</Loc>
+                <Loc to={`/locate/${state.lon}/${state.lat}`}>Weather in your Location</Loc>
             </DivLoc>
         </NavBar>
     )

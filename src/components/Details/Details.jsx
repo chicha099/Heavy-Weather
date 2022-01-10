@@ -13,7 +13,8 @@ import NextDays from '../NextDays/NextDays';
 import loader from '../../media/loader2.gif'
 import { Link } from 'react-router-dom';
 import back from '../../media/atras.png'
-
+import c01d from '../../media/conditions/c01d.png'
+import c01n from '../../media/conditions/c01n.png'
 //Styled-components
 
 const Body = styled.div`
@@ -187,10 +188,10 @@ const Button = styled(Link)`
     margin: 0;
 `;
 
-export default function Details(props){
+export default function Details(props) {
 
     const dispatch = useDispatch();
-    
+
     useEffect(() => {
         dispatch(getCityById(props.match.params.id))
     }, [])
@@ -199,66 +200,71 @@ export default function Details(props){
     const detail = useSelector(store => store.cityDetails)
 
     //HORA
-    const timezoneInMinutes = (detail.timezone)/ 60;
+    const timezoneInMinutes = (detail.timezone) / 60;
     const currTime = moment().utcOffset(timezoneInMinutes).format("h:mm A");
 
+
+    let conditions = {
+        c01d: c01d,
+        c01n: c01n
+    }
 
     return (
         <Body>
             {
-                (Array.isArray(detail)) 
-                ?<DivLoader><img src={loader} /></DivLoader>
-                : <ContainerInfo>
-                    <DivButton>
-                        <img src={back} width='10px' height='10px' />
-                        <Button to='/'>Back</Button>
-                    </DivButton>
-                    <ContainerOne>
-                        <DivAux>
-                            <DivLocation>
-                                <H1>{detail.name}</H1>
-                                <Time>{currTime}</Time>
-                            </DivLocation>
-                            <DivGeneral>
-                                <DivTempInfo>
-                                    <DivTemp>
-                                        <img src={`http://openweathermap.org/img/wn/${detail.weather[0].icon}@2x.png`} width='130px' height='130px'/>
-                                        <Temp>{`${Math.round(detail.main.temp)}°c`}</Temp>
-                                    </DivTemp>
-                                    <DivInfo>
-                                        <Description>{detail.weather[0].description}</Description>
-                                        <Feel>Feels like: {Math.round(detail.main.feels_like)}°</Feel>
-                                        <P>The high will be {Math.round(detail.main.temp_max)}°. </P>
-                                    </DivInfo>
-                                </DivTempInfo>
-                                <DivIcons>
-                                    <IconContainer>
-                                        <img src={win} width='30px' height='30px' />
-                                        <DivP><P>Wind</P><P>{Math.round(detail.wind.speed)} m/s</P></DivP>
-                                    </IconContainer>
-                                    <IconContainer>
-                                        <img src={visib} width='30px' height='30px' />
-                                        <DivP><P>Visibility</P><P>{detail.visibility / 1000} km</P></DivP>
-                                    </IconContainer>
-                                    <IconContainer>
-                                        <img src={gauge} width='30px' height='30px' />
-                                        <DivP><P>Pressure</P><P>{detail.main.pressure} hPa</P></DivP>
-                                    </IconContainer>
-                                    <IconContainer>
-                                        <img src={humidi} width='30px' height='30px' />
-                                        <DivP><P>Humidity</P><P>{detail.main.humidity} %</P></DivP>
-                                    </IconContainer>
-                                </DivIcons>
-                            </DivGeneral>
-                        </DivAux>
-                        <DivNextDays>
-                            <NextDays lat={detail.coord.lat} lon={detail.coord.lon} />
-                        </DivNextDays>
-                    </ContainerOne>
-                    <ContainerTwo>
-                        <MapView lat={detail.coord.lat} lon={detail.coord.lon} />
-                    </ContainerTwo>
-                </ContainerInfo>
+                (Array.isArray(detail))
+                    ? <DivLoader><img src={loader} /></DivLoader>
+                    : <ContainerInfo>
+                        <DivButton>
+                            <img src={back} width='10px' height='10px' />
+                            <Button to='/'>Back</Button>
+                        </DivButton>
+                        <ContainerOne>
+                            <DivAux>
+                                <DivLocation>
+                                    <H1>{detail.name}</H1>
+                                    <Time>{currTime}</Time>
+                                </DivLocation>
+                                <DivGeneral>
+                                    <DivTempInfo>
+                                        <DivTemp>
+                                            <img src={(detail.weather[0].icon === '01d') ? conditions[`c${detail.weather[0].icon}`] : `http://openweathermap.org/img/wn/${detail.weather[0].icon}@2x.png`} width='130px' height='130px' />
+                                            <Temp>{`${Math.round(detail.main.temp)}°c`}</Temp>
+                                        </DivTemp>
+                                        <DivInfo>
+                                            <Description>{detail.weather[0].description}</Description>
+                                            <Feel>Feels like: {Math.round(detail.main.feels_like)}°</Feel>
+                                            <P>The high will be {Math.round(detail.main.temp_max)}°. </P>
+                                        </DivInfo>
+                                    </DivTempInfo>
+                                    <DivIcons>
+                                        <IconContainer>
+                                            <img src={win} width='30px' height='30px' />
+                                            <DivP><P>Wind</P><P>{Math.round(detail.wind.speed)} m/s</P></DivP>
+                                        </IconContainer>
+                                        <IconContainer>
+                                            <img src={visib} width='30px' height='30px' />
+                                            <DivP><P>Visibility</P><P>{detail.visibility / 1000} km</P></DivP>
+                                        </IconContainer>
+                                        <IconContainer>
+                                            <img src={gauge} width='30px' height='30px' />
+                                            <DivP><P>Pressure</P><P>{detail.main.pressure} hPa</P></DivP>
+                                        </IconContainer>
+                                        <IconContainer>
+                                            <img src={humidi} width='30px' height='30px' />
+                                            <DivP><P>Humidity</P><P>{detail.main.humidity} %</P></DivP>
+                                        </IconContainer>
+                                    </DivIcons>
+                                </DivGeneral>
+                            </DivAux>
+                            <DivNextDays>
+                                <NextDays lat={detail.coord.lat} lon={detail.coord.lon} />
+                            </DivNextDays>
+                        </ContainerOne>
+                        <ContainerTwo>
+                            <MapView lat={detail.coord.lat} lon={detail.coord.lon} />
+                        </ContainerTwo>
+                    </ContainerInfo>
             }
         </Body>
     )

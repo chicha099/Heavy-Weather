@@ -7,6 +7,8 @@ import humidit from '../../media/humidity.png'
 import visibilit from '../../media/witness.png'
 import win from '../../media/wind.png'
 import gauge from '../../media/gauge.png'
+import c01d from '../../media/conditions/c01d.png'
+import c01n from '../../media/conditions/c01n.png'
 import { Link } from 'react-router-dom';
 import getNextWeather from '../../actions/getNextWeather';
 
@@ -21,7 +23,7 @@ const CardContainer = styled(Link)`
     border-radius: 10px;
     box-shadow: 5px 5px 20px lightgray;
     margin: 10px 0 10px 0;
-    background: linear-gradient(to bottom, #077196, #3190AB);
+    background: linear-gradient(to bottom, #35005A, #4F0880);
     overflow: hidden;
     text-decoration: none;
 `;
@@ -142,7 +144,7 @@ const Center = styled.div`
     justify-content: flex-start;
 `;
 
-export default function Card({lon, lat, name, temp, min, max, time, img, description, humidity, feel, visibility, wind, pressure, id}){
+export default function Card({ lon, lat, name, temp, min, max, time, img, description, humidity, feel, visibility, wind, pressure, id }) {
 
     const dispatch = useDispatch();
 
@@ -156,11 +158,17 @@ export default function Card({lon, lat, name, temp, min, max, time, img, descrip
     const currTime = moment().utcOffset(timezoneInMinutes).format("h:mm A");
 
     //Visibility
-    const visibi = visibility/1000;
+    const visibi = visibility / 1000;
+    let conditions = {
+        c01d: c01d,
+        c01n: c01n
+    }
+    let isMine = false;
+    if (img === "01n" || img === "01d") isMine = true;
 
 
     return (
-        <CardContainer to={`/details/${id}`} onClick={() => {dispatch(getNextWeather(lat, lon))}}>
+        <CardContainer to={`/details/${id}`} onClick={() => { dispatch(getNextWeather(lat, lon)) }}>
             <Container>
                 <DivH1>
                     <H1>Weather in <City>{name}</City></H1>
@@ -170,18 +178,18 @@ export default function Card({lon, lat, name, temp, min, max, time, img, descrip
                 </DivH1>
                 <DivInfo>
                     <Center>
-                        <DivHum><img src={humidit} width='20px' height='20px'/><Hum>Humidity: {humidity}%</Hum></DivHum>
-                        <DivHum><img src={visibilit} width='20px' height='20px'/><Hum>Visibility: {visibi} km</Hum></DivHum>
-                        <DivHum><img src={win} width='20px' height='20px'/><Hum>Wind speed: {wind} m/s</Hum></DivHum>
-                        <DivHum><img src={gauge} width='20px' height='20px'/><Hum>Pressure: {pressure} hPa</Hum></DivHum>
+                        <DivHum><img src={humidit} width='20px' height='20px' /><Hum>Humidity: {humidity}%</Hum></DivHum>
+                        <DivHum><img src={visibilit} width='20px' height='20px' /><Hum>Visibility: {visibi} km</Hum></DivHum>
+                        <DivHum><img src={win} width='20px' height='20px' /><Hum>Wind speed: {wind} m/s</Hum></DivHum>
+                        <DivHum><img src={gauge} width='20px' height='20px' /><Hum>Pressure: {pressure} hPa</Hum></DivHum>
                     </Center>
                 </DivInfo>
                 <TempDiv>
                     <Description>{description}</Description>
-                    <img src={`http://openweathermap.org/img/wn/${img}@2x.png`} width='100px' height='100px'/>
+                    <img src={isMine ? conditions[`c${img}`] : `http://openweathermap.org/img/wn/${img}@2x.png`} width='100px' height='100px' />
                     <MinMax>{Math.round(max)}°/{Math.round(min)}°</MinMax>
                 </TempDiv>
-                <Button onClick={(e) => {handleClick(e)}}>X</Button>
+                <Button onClick={(e) => { handleClick(e) }}>X</Button>
             </Container>
         </CardContainer>
     )

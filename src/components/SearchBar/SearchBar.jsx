@@ -19,8 +19,9 @@ const Input = styled.input`
     outline: none;
     padding: 9px 40px 9px 40px;
     border: 0;
-    border-radius: 20px;
+    border-radius: 5px;
     text-align: center;
+    margin-right: 1%;
     align-items: center;
     color: white;
     font-size: 1em;
@@ -48,6 +49,7 @@ const DivInput = styled.div`
 const Ico = styled.img`
     position: absolute;
     right: 10px;
+    cursor: pointer;
 `;
 
 // const Label = styled.label`
@@ -56,11 +58,11 @@ const Ico = styled.img`
 //     display: block;
 // `;
 
-export default function SearchBar(){
-    const [ city, setCity ] = useState('')
+export default function SearchBar() {
+    const [city, setCity] = useState('')
     const dispatch = useDispatch()
     const history = useHistory()
-    
+
     const handleChange = (e) => {
         setCity(e.target.value)
     }
@@ -74,11 +76,11 @@ export default function SearchBar(){
 
     return (
         <DivSearch>
-            <form onSubmit={(e) => {handleSubmit(e)}}>
+            <form onSubmit={(e) => { handleSubmit(e) }}>
                 <DivInput>
                     {/* <Label for='search'>Search</Label> */}
-                    <Input id='search' placeholder="Search city" type="text" value={city} onChange={(e) => {handleChange(e)}}/>
-                    <Ico src={lupa} width='20px' height='20px' />
+                    <Input id='search' placeholder="Search city" type="text" value={city} onChange={(e) => { handleChange(e) }} />
+                    <Ico src={lupa} width='20px' height='20px' onClick={(e) => handleSubmit(e)} />
                 </DivInput>
             </form>
         </DivSearch>
